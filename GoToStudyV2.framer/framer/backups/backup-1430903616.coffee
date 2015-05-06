@@ -45,7 +45,7 @@ container = new ScrollComponent width:Screen.width, height:Screen.height-topBar.
 rowMargin = 30
 rowWidth = 500
 
-allRows = for i in [0...11]
+allRows = for i in [0...10]
 	rows = new Layer 
 		width : rowWidth
 		height:1390
@@ -161,13 +161,7 @@ taskArtTimeText.html = textArt.estimated + " min"
 taskArtTimeText.style = taskTimeStyle
 	
 
-#-------------------
-
-
-
-
-#taskArt = new Layer width: 462, height:248, superLayer: container.content, x:20, y:task.y+task.height+30, image:"images/task2.png", visible:false
-
+# Task card ---------------
 
 overlay = new Layer width:Screen.width, height:Screen.height, backgroundColor:"black", opacity:0
 
@@ -230,7 +224,7 @@ taskCardBtn = new Layer superLayer:taskCard, width:308, height:88, y:870, image:
 taskCardBtn.centerX()
 
 
-bookContainer = new Layer width:Screen.width, height:Screen.height, backgroundColor:"white", opacity:0, scrollHorizontal: false, visible:false, index:3
+bookContainer = new Layer width:Screen.width, height:Screen.height, backgroundColor:"white", opacity:1, scrollHorizontal: false, visible:true, index:3
 textContainer = new ScrollComponent width:1440, height:Screen.height, superLayer: bookContainer, x:Screen.width/2-1440/2, backgroundColor:"transparent", scrollHorizontal: false
 
 textTitle = new Layer width:textContainer.width, superLayer:textContainer.content, height:270, y:200, backgroundColor:"transparent"
@@ -256,12 +250,18 @@ textBody.style = {
 	"text-align" : "left"
 }
 
+closeBook = new Layer width:48, height:48, superLayer: bookContainer, image:"images/closeIcon.png", x:60, y:60
+noteIcon = new Layer width:48, height:48, superLayer: bookContainer, image:"images/noteIcon.png", x:Screen.width - 120, y:60
 
 
-closeBook = new Layer superLayer: bookContainer, backgroundColor:"#fff", opacity:.5
+# Note ---------------
+noteContainer = new Layer height:Screen.height, width:720, x:Screen.width, backgroundColor:"#fff", borderColor: "rgba(0,0,0,0.1)", borderWidth:2
+closeNoteContainer = new Layer width:48, height:48, superLayer: noteContainer, image:"images/closeIcon.png", x:60, y:60, opacity:0 
+
+textInputLayer = new Layer x:0, y:0, width:noteContainer.width, height:100, superLayer:noteContainer, y:noteContainer.height-100, backgroundColor:"#F7F7F7"
 
 
-
+# Actions -----------
 task.on Events.Click, ->
 	container.scrollHorizontal = false
 	taskCard.visible = true
@@ -342,10 +342,6 @@ taskCardBtn.on Events.Click, ->
 		textBody.height = textPrince.height+100
 		
 	
-		
-	
-	
-
 closeBook.on Events.Click, ->
 	bookContainer.animate
 		properties: 
@@ -353,5 +349,136 @@ closeBook.on Events.Click, ->
 		time: nomalTime	
 	Utils.delay nomalTime, ->	
 		bookContainer.visible = false
+		
+noteIcon.on Events.Click, ->
+	bookContainer.animate
+		properties: 
+			x:-380
+		time: nomalTime	
+		curve: beizerCurve
+noteIcon.on Events.Click, ->
+	noteContainer.animate
+		properties: 
+			x:Screen.width-720
+		time: nomalTime
+		curve: beizerCurve
+	textTitle.animate
+		properties: 
+			opacity:0.6
+		time: nomalTime
+	textBody.animate
+		properties: 
+			opacity:0.6
+		time: nomalTime
+	closeNoteContainer.animate
+		properties:
+			opacity:1
+			rotationZ:360
+		time: nomalTime
+	noteIcon.animate
+		properties:
+			opacity:0
+			rotationZ:360
+		time:nomalTime
+		
+closeNoteContainer.on Events.Click, ->
+	noteContainer.animate
+		properties: 
+			x:Screen.width
+		time: nomalTime
+		curve: beizerCurve
+	bookContainer.animate
+		properties: 
+			x:0
+		time: nomalTime
+		curve: beizerCurve	
+	textTitle.animate
+		properties: 
+			opacity:1
+		time: nomalTime
+	textBody.animate
+		properties: 
+			opacity:1
+		time: nomalTime
+	closeNoteContainer.animate
+		properties:
+			opacity:0
+			rotationZ:-360
+		time: nomalTime
+	noteIcon.animate
+		properties:
+			opacity:1
+			rotationZ:-360
+		time: nomalTime
 
 
+# Input stuff -----------
+
+textInputLayer.ignoreEvents = false
+textInputLayer.style = {"border-top" : "1px solid #c9c9c9"}
+
+# This creates a text input and adds some styling in plain JS
+inputElement = document.createElement("textarea")
+inputElement.style["width"]  = "680px"
+inputElement.style["height"] = "#{textInputLayer.height}px"
+inputElement.style["font"] = "34px/1.35em avenir"
+inputElement.style["-webkit-user-select"] = "text"
+inputElement.style["padding"] = "22px 50px 0 20px"
+inputElement.style["outline"] = "none"
+inputElement.style["background-color"] = "#F7F7F7"
+
+
+# Set the value, focus and listen for changes
+inputElement.placeholder = "Type a note"
+inputElement.value = ""
+inputElement.focus()
+inputElement.onkeyup = (e) ->
+	# Draw the message
+	if e.keyCode is 13
+		# Set the textvalue
+		textVal = inputElement.value
+	
+		# Clear the value
+		inputElement.value = ""
+		
+		# Message setup
+		msgWrapper = new Layer
+			superLayer: noteContainer
+			y: Screen.height 
+			width: noteContainer.width
+			height: noteContainer.height
+			backgroundColor: "transparent"
+		msgWrapper.states.add
+			origin: {y: Screen.height}
+			dest: {y: 200+(msgCount * msgWrapper.height)}
+		
+		msgBubble = new Layer
+			superLayer: msgWrapper,
+			x: 60
+			width: noteContainer.width-120
+			height: noteContainer.height
+			borderRadius: 20
+			backgroundColor: "transparent"
+			cut: false
+
+		
+		
+		msgText = new Layer
+			superLayer: msgBubble
+			width: noteContainer.width-120
+			height: noteContainer.height
+			backgroundColor: "transparent"
+		msgText.html = textVal
+		msgText.style = {
+			"color" : "#000"
+			"line-height" : "42px"
+			"font" : "32px ff-tisa-pro"		
+		}
+		
+		# Message Animations
+		msgWrapper.states.switch "dest", curve:"spring(800,80,0)"
+		msgCount++
+
+
+# Place input layer on screen
+textInputLayer._element.appendChild(inputElement)
