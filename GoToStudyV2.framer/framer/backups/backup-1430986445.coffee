@@ -257,6 +257,7 @@ noteIcon = new Layer width:48, height:48, superLayer: bookContainer, image:"imag
 # Note ---------------
 noteContainer = new Layer height:Screen.height, width:720, x:Screen.width, backgroundColor:"#fff", borderColor: "rgba(0,0,0,0.1)", borderWidth:2
 closeNoteContainer = new Layer width:48, height:48, superLayer: noteContainer, image:"images/closeIcon.png", x:60, y:60, opacity:0 
+checkNoteContainer = new Layer width:48, height:48, superLayer: noteContainer, image:"images/checkmark.png", x:60, y:60, opacity:0 
 
 textInputLayer = new Layer x:0, y:0, width:noteContainer.width, height:100, superLayer:noteContainer, y:noteContainer.height-100, backgroundColor:"#F7F7F7"
 
@@ -410,6 +411,13 @@ closeNoteContainer.on Events.Click, ->
 			opacity:1
 			rotationZ:-360
 		time: nomalTime
+	checkNoteContainer.animate
+		properties:
+			opacity:0
+			rotationZ:-360
+		time: nomalTime
+			
+
 
 
 # Input stuff -----------
@@ -446,33 +454,37 @@ inputElement.onkeyup = (e) ->
 			superLayer: noteContainer
 			y: Screen.height 
 			width: noteContainer.width
-			height: noteContainer.height
 			backgroundColor: "transparent"
+		msgWrapper.style.height = "auto"
+			
 		msgWrapper.states.add
 			origin: {y: Screen.height}
-			dest: {y: 200+(msgCount * msgWrapper.height)}
-		
-		msgBubble = new Layer
-			superLayer: msgWrapper,
-			x: 60
-			width: noteContainer.width-120
-			height: noteContainer.height
-			borderRadius: 20
-			backgroundColor: "transparent"
-			cut: false
-
-		
+			dest: {y: 200+(msgCount)}
+			
+	
+		checkNoteContainer.animate
+			properties:
+				opacity:1
+				rotationZ:360
+			time: nomalTime
+			
+		closeNoteContainer.animate
+			properties:
+				opacity:0
+				rotationZ:-360
+			time: nomalTime
 		
 		msgText = new Layer
-			superLayer: msgBubble
+			x: 40
+			superLayer: msgWrapper
 			width: noteContainer.width-120
-			height: noteContainer.height
 			backgroundColor: "transparent"
 		msgText.html = textVal
 		msgText.style = {
 			"color" : "#000"
 			"line-height" : "42px"
-			"font" : "32px ff-tisa-pro"		
+			"font" : "32px ff-tisa-pro"	
+			"height" : "auto"	
 		}
 		
 		# Message Animations

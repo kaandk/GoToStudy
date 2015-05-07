@@ -28,9 +28,9 @@ springCurve = "spring(200,16,0)"
 msgCount = 0
 msgHeight = 150
 
-bg = new BackgroundLayer backgroundColor:"#F0F7F6"
+bg = new BackgroundLayer backgroundColor:"#F0F7F4"
 
-topBar = new Layer width:Screen.width, height:130, backgroundColor:"#19BC9C"
+topBar = new Layer width:Screen.width, height:130, backgroundColor:"#21de92", image: "images/topBar.png"
 topBarTitle = new Layer width:220, height:42, superLayer:topBar, backgroundColor:"transparent", y:63
 topBarTitle.centerX()
 topBarTitle.html = "Assignments"
@@ -40,6 +40,12 @@ topBarTitle.style = {
 	"font-weight": "bold"
 	"text-style": "800"
 }
+
+menuIcon = new Layer width:32, height:24, x:30, y:77, backgroundColor:"transparent"
+menuIcon1 = new Layer width:menuIcon.width, height:4, superLayer:menuIcon, backgroundColor:"white", originX: 0
+menuIcon2 = new Layer width:menuIcon.width, height:4,y:menuIcon.height/2-2, superLayer:menuIcon, backgroundColor:"white"
+menuIcon3 = new Layer width:menuIcon.width, height:4,y:menuIcon.height-4, superLayer:menuIcon, backgroundColor:"white", originX: 0
+
 container = new ScrollComponent width:Screen.width, height:Screen.height-topBar.height, y:topBar.height+30, scrollVertical: false, index:1
 
 rowMargin = 30
@@ -90,75 +96,69 @@ allRows = for i in [0...10]
 
 rowCalc = new Layer width: 530, height:1390, superLayer: container.content, x:0, backgroundColor:"transparent"
 
-taskClassStyle = {
+
+allTask = for i in [0...3]
+	task = new Layer width: 460, superLayer:container.content , x:rowCalc.x+rowCalc.width*i+50, y:115, backgroundColor:"#fff", borderRadius:8, shadowY:4, shadowBlur:2, shadowColor:"rgba(0,0,0,0.05)", borderColor:"#DEDEDE", borderWidth:1
+
+	task.style.height = "auto"
+	task.style = {
 	"color": "#4A4A4A"
 	"font": "28px avenir"
-	"font-weight": "light"
-	"text-align" : "left"
-}
-
-taskTaskStyle = {
-	"color": "#4A4A4A"
-	"font": "28px avenir"
-	"font-weight": "600"
-	"text-align" : "left"
-	"font-style" : "italic"
-	"line-height" : "38px"
-}
-
-taskTimeStyle = {
-	"color": "#4A4A4A"
-	"font": "20px avenir"
 	"font-weight": "300"
 	"text-align" : "left"
-}
+	"padding" : "20px 20px 10px 20px"
+	"line-height":"38px"
+	}
+
+	classes = new Array('<h5>Art</h5>', '<h5>English</h5>', '<h5>History</h5>', '<h5>Math</h5>')
 
 
+	task.html = classes[i] + textPrince.task + "<hr style='border:1px solid #DEDEDE;margin-top:15px'><div style='font-size:20px; padding-top:10px'><span style='font-family:FontAwesome'></span> 15 min read</div>"
 
 
 # First Task -------
 
-task = new Layer width: 460, height:206, superLayer:container.content , x:rowCalc.x+rowCalc.width*textPrince.row+50, y:115, backgroundColor:"#fff", borderRadius:8, shadowY:4, shadowBlur:2, shadowColor:"rgba(0,0,0,0.05)", borderColor:"#DEDEDE", borderWidth:1
-
-taskClass = new Layer superLayer:task, width:task.width-40, x:20, y:18, height:40, backgroundColor:"transparent"
-taskClass.html = textPrince.class
-taskClass.style = taskClassStyle
-
-taskTask = new Layer superLayer:task, width:task.width-40, x:20, y:taskClass.y+taskClass.height, height:72, backgroundColor:"transparent"
-taskTask.html = textPrince.task
-taskTask.style = taskTaskStyle
-
-taskDivider = new Layer superLayer:task, width:task.width-40, x:20, y:taskTask.y+taskTask.height+20, height:2, backgroundColor:"#DEDEDE"
-taskTimeContainer = new Layer superLayer:task, width:task.width-40, x:20, y:taskDivider.y+taskDivider.height+13, height:30, backgroundColor:"transparent"
-taskTimeIcon = new Layer superLayer:taskTimeContainer,x:1, width:20, height:20, backgroundColor:"#DEDEDE", image:"images/timeIcon.png"
-taskTimeText = new Layer superLayer:taskTimeContainer,x:taskTimeIcon.width+10, width:taskTimeContainer.width-taskTimeIcon.width-10,y:-3, height:30, backgroundColor:"transparent"
-taskTimeText.html = textPrince.estimated + " min"
-taskTimeText.style = taskTimeStyle
+# task = new Layer width: 460, height:206, superLayer:container.content , x:rowCalc.x+rowCalc.width*textPrince.row+50, y:115, backgroundColor:"#fff", borderRadius:8, shadowY:4, shadowBlur:2, shadowColor:"rgba(0,0,0,0.05)", borderColor:"#DEDEDE", borderWidth:1
+# 
+# taskClass = new Layer superLayer:task, width:task.width-40, x:20, y:18, height:40, backgroundColor:"transparent"
+# taskClass.html = textPrince.class
+# taskClass.style = taskClassStyle
+# 
+# taskTask = new Layer superLayer:task, width:task.width-40, x:20, y:taskClass.y+taskClass.height, height:72, backgroundColor:"transparent"
+# taskTask.html = textPrince.task
+# taskTask.style = taskTaskStyle
+# 
+# taskDivider = new Layer superLayer:task, width:task.width-40, x:20, y:taskTask.y+taskTask.height+20, height:2, backgroundColor:"#DEDEDE"
+# taskTimeContainer = new Layer superLayer:task, width:task.width-40, x:20, y:taskDivider.y+taskDivider.height+13, height:30, backgroundColor:"transparent"
+# taskTimeIcon = new Layer superLayer:taskTimeContainer,x:1, width:20, height:20, backgroundColor:"#DEDEDE", image:"images/timeIcon.png"
+# taskTimeText = new Layer superLayer:taskTimeContainer,x:taskTimeIcon.width+10, width:taskTimeContainer.width-taskTimeIcon.width-10,y:-3, height:30, backgroundColor:"transparent"
+# taskTimeText.html = textPrince.estimated + " min"
+# taskTimeText.style = taskTimeStyle
 		
 # Second Task -------
 
-yTop = 
-	if textPrince.row == textArt.row
-		task.y+task.height+30
-	else
-		115
-
-taskArt = new Layer width: 460, height:243, superLayer:container.content , x:rowCalc.x+rowCalc.width*textArt.row+50, y:yTop, backgroundColor:"#fff", borderRadius:8, shadowY:4, shadowBlur:2, shadowColor:"rgba(0,0,0,0.05)", borderColor:"#DEDEDE", borderWidth:1
-
-taskArtClass = new Layer superLayer:taskArt, width:task.width-40, x:20, y:18, height:40, backgroundColor:"transparent"
-taskArtClass.html = textArt.class
-taskArtClass.style = taskClassStyle
-
-taskArtTask = new Layer superLayer:taskArt, width:task.width-40, x:20, y:taskClass.y+taskClass.height, height:108, backgroundColor:"transparent"
-taskArtTask.html = textArt.task
-taskArtTask.style = taskTaskStyle
-
-taskArtDivider = new Layer superLayer:taskArt, width:taskArt.width-40, x:20, y:taskArtTask.y+taskArtTask.height+20, height:2, backgroundColor:"#DEDEDE"
-taskArtTimeContainer = new Layer superLayer:taskArt, width:task.width-40, x:20, y:taskArtDivider.y+taskArtDivider.height+13, height:30, backgroundColor:"transparent"
-taskArtTimeIcon = new Layer superLayer:taskArtTimeContainer,x:1, width:20, height:20, backgroundColor:"#DEDEDE", image:"images/timeIcon.png"
-taskArtTimeText = new Layer superLayer:taskArtTimeContainer,x:taskTimeIcon.width+10, width:taskArtTimeContainer.width-taskArtTimeIcon.width-10,y:-3, height:30, backgroundColor:"transparent"
-taskArtTimeText.html = textArt.estimated + " min"
-taskArtTimeText.style = taskTimeStyle
+# yTop = 
+# 	if textPrince.row == textArt.row
+# 		task.y+task.height+30
+# 	else
+# 		115
+# 
+# taskArt = new Layer width: 460, height:243, superLayer:container.content , x:rowCalc.x+rowCalc.width*textArt.row+50, y:yTop, backgroundColor:"#fff", borderRadius:8, shadowY:4, shadowBlur:2, shadowColor:"rgba(0,0,0,0.05)", borderColor:"#DEDEDE", borderWidth:1
+# 
+# taskArtClass = new Layer superLayer:taskArt, width:task.width-40, x:20, y:18, height:40, backgroundColor:"transparent"
+# taskArtClass.html = textArt.class
+# taskArtClass.style = taskClassStyle
+# 
+# taskArtTask = new Layer superLayer:taskArt, width:task.width-40, x:20, y:taskArtClass.y+taskClass.height, height:108, backgroundColor:"transparent"
+# taskArtTask.html = textArt.task
+# taskArtTask.style = taskTaskStyle
+# 
+# taskArtDivider = new Layer superLayer:taskArt, width:taskArt.width-40, x:20, y:taskArtTask.y+taskArtTask.height+20, height:2, backgroundColor:"#DEDEDE"
+# taskArtTimeContainer = new Layer superLayer:taskArt, width:task.width-40, x:20, y:taskArtDivider.y+taskArtDivider.height+13, height:30, backgroundColor:"transparent"
+# taskArtTimeIcon = new Layer superLayer:taskArtTimeContainer,x:1, width:20, height:20, backgroundColor:"#DEDEDE", image:"images/timeIcon.png"
+# taskArtTimeText = new Layer superLayer:taskArtTimeContainer,x:taskTimeIcon.width+10, width:taskArtTimeContainer.width-taskArtTimeIcon.width-10,y:-3, height:30, backgroundColor:"transparent"
+# taskArtTimeText.html = textArt.estimated + " min"
+# taskArtTimeText.style = taskTimeStyle
 	
 
 # Task card ---------------
@@ -167,6 +167,28 @@ overlay = new Layer width:Screen.width, height:Screen.height, backgroundColor:"b
 
 taskCard = new Layer width:800, height:1000, x:Screen.width/2-400, y:Screen.height/2-300, backgroundColor:"#fff", opacity:0, visible:false, index:2
 taskCardCover = new Layer superLayer: taskCard, width:taskCard.width, height:400, image:"http://placehold.it/800x400"
+
+
+# taskCard = new Layer width:800, height:1000, x:Screen.width/2-400, y:Screen.height/2-300, backgroundColor:"#fff", opacity:0, visible:false, index:2
+# taskCardCover = new Layer superLayer: taskCard, width:taskCard.width, height:340, image:"http://placehold.it/800x400"
+# taskCardText = new Layer superLayer: taskCard, width:taskCard.width, height:taskCard.height-taskCardCover.height-100, y:taskCardCover.height, backgroundColor:"transparent"
+# 
+# taskCardText.style = {
+# 	"color": "#4A4A4A"
+# 	"font": "28px avenir"
+# 	"font-weight": "normal"
+# 	"text-align" : "left"
+# 	"line-height" : "38px"
+# 	"padding" : "30px 40px"
+# }
+# 
+# taskCardText.html =
+# 	"<h5>Class:</h5>History </br></br><h5>Task:</h5>Please read page 23 - 40 in The Prince and answer 5 questions </br></br><h5>Deadline:</h5>04 April 2015 </br></br><h5>Estimated time:</h5>15 min"
+# 	
+# taskCardBtn = new Layer superLayer:taskCard, width:308, height:88, y:taskCardText.height+taskCardCover.height-10, image:"images/start.png"
+# taskCardBtn.centerX()
+# 
+# taskCard.center()
 
 taskCardHeadlines = {
 	"color": "#4A4A4A"
@@ -224,7 +246,7 @@ taskCardBtn = new Layer superLayer:taskCard, width:308, height:88, y:870, image:
 taskCardBtn.centerX()
 
 
-bookContainer = new Layer width:Screen.width, height:Screen.height, backgroundColor:"white", opacity:1, scrollHorizontal: false, visible:true, index:3
+bookContainer = new Layer width:Screen.width, height:Screen.height, backgroundColor:"white", opacity:0, scrollHorizontal: false, visible:false, index:3
 textContainer = new ScrollComponent width:1440, height:Screen.height, superLayer: bookContainer, x:Screen.width/2-1440/2, backgroundColor:"transparent", scrollHorizontal: false
 
 textTitle = new Layer width:textContainer.width, superLayer:textContainer.content, height:270, y:200, backgroundColor:"transparent"
@@ -257,6 +279,7 @@ noteIcon = new Layer width:48, height:48, superLayer: bookContainer, image:"imag
 # Note ---------------
 noteContainer = new Layer height:Screen.height, width:720, x:Screen.width, backgroundColor:"#fff", borderColor: "rgba(0,0,0,0.1)", borderWidth:2
 closeNoteContainer = new Layer width:48, height:48, superLayer: noteContainer, image:"images/closeIcon.png", x:60, y:60, opacity:0 
+checkNoteContainer = new Layer width:48, height:48, superLayer: noteContainer, image:"images/checkmark.png", x:60, y:60, opacity:0 
 
 textInputLayer = new Layer x:0, y:0, width:noteContainer.width, height:100, superLayer:noteContainer, y:noteContainer.height-100, backgroundColor:"#F7F7F7"
 
@@ -281,24 +304,44 @@ task.on Events.Click, ->
 		time: nomalTime
 		curve: beizerCurve
 		
-taskArt.on Events.Click, ->
-	container.scrollHorizontal = false
-	taskCard.visible = true
-	taskCardCover.image = "images/artCover.png"
-	taskCardClass.html = textArt.class
-	taskCardTask.html = textArt.task
-	taskCardDeadline.html = textArt.deadline
-	taskCardEstimate.html = textArt.estimated  + " min"
-	overlay.animate
-		properties: 
-			opacity:0.6
+# taskArt.on Events.Click, ->
+# 	container.scrollHorizontal = false
+# 	taskCard.visible = true
+# 	taskCardCover.image = "images/artCover.png"
+# 	taskCardClass.html = textArt.class
+# 	taskCardTask.html = textArt.task
+# 	taskCardDeadline.html = textArt.deadline
+# 	taskCardEstimate.html = textArt.estimated  + " min"
+# 	overlay.animate
+# 		properties: 
+# 			opacity:0.6
+# 		time: nomalTime
+# 	taskCard.animate
+# 		properties: 
+# 			opacity:1
+# 			y:Screen.height/2-taskCard.height/2
+# 		time: nomalTime
+# 		curve: beizerCurve		
+
+menuIcon.on Events.Click, ->
+	menuIcon1.animate
+		properties:
+			rotationZ:45
+			x: 4
 		time: nomalTime
-	taskCard.animate
-		properties: 
-			opacity:1
-			y:Screen.height/2-taskCard.height/2
+		curve: beizerCurve
+	menuIcon2.animate
+		properties:
+			opacity:0
 		time: nomalTime
-		curve: beizerCurve		
+		curve: beizerCurve
+	menuIcon3.animate
+		properties:
+			rotationZ:-45
+			x:4
+		time: nomalTime
+		curve: beizerCurve
+			
 
 taskCard.on Events.DragEnd, ->
 	if taskCard.y > 500
@@ -410,6 +453,13 @@ closeNoteContainer.on Events.Click, ->
 			opacity:1
 			rotationZ:-360
 		time: nomalTime
+	checkNoteContainer.animate
+		properties:
+			opacity:0
+			rotationZ:-360
+		time: nomalTime
+			
+
 
 
 # Input stuff -----------
@@ -423,7 +473,7 @@ inputElement.style["width"]  = "680px"
 inputElement.style["height"] = "#{textInputLayer.height}px"
 inputElement.style["font"] = "34px/1.35em avenir"
 inputElement.style["-webkit-user-select"] = "text"
-inputElement.style["padding"] = "22px 50px 0 20px"
+inputElement.style["padding"] = "26px 50px 0 20px"
 inputElement.style["outline"] = "none"
 inputElement.style["background-color"] = "#F7F7F7"
 
@@ -446,33 +496,37 @@ inputElement.onkeyup = (e) ->
 			superLayer: noteContainer
 			y: Screen.height 
 			width: noteContainer.width
-			height: noteContainer.height
 			backgroundColor: "transparent"
+		msgWrapper.style.height = "auto"
+			
 		msgWrapper.states.add
 			origin: {y: Screen.height}
-			dest: {y: 200+(msgCount * msgWrapper.height)}
-		
-		msgBubble = new Layer
-			superLayer: msgWrapper,
-			x: 60
-			width: noteContainer.width-120
-			height: noteContainer.height
-			borderRadius: 20
-			backgroundColor: "transparent"
-			cut: false
-
-		
+			dest: {y: 200+(msgCount)}
+			
+	
+		checkNoteContainer.animate
+			properties:
+				opacity:1
+				rotationZ:360
+			time: nomalTime
+			
+		closeNoteContainer.animate
+			properties:
+				opacity:0
+				rotationZ:-360
+			time: nomalTime
 		
 		msgText = new Layer
-			superLayer: msgBubble
+			x: 40
+			superLayer: msgWrapper
 			width: noteContainer.width-120
-			height: noteContainer.height
 			backgroundColor: "transparent"
 		msgText.html = textVal
 		msgText.style = {
 			"color" : "#000"
 			"line-height" : "42px"
-			"font" : "32px ff-tisa-pro"		
+			"font" : "32px ff-tisa-pro"	
+			"height" : "auto"	
 		}
 		
 		# Message Animations

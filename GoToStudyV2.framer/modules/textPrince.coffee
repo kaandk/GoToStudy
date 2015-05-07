@@ -1,8 +1,8 @@
 exports.row = 1
 
-exports.class = 'History'
+exports.class = '<h5>History</h5>'
 
-exports.task = 'Please read page 23 - 40 in The Prince and answer 5 questions'
+exports.task = '<i>Please read page 23 - 40 in The Prince and answer 5 questions </i>'
 
 exports.deadline = '04 April 2015'
 
