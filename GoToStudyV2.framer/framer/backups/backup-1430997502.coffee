@@ -1,26 +1,6 @@
 textPrince = require "textPrince"
 textArt = require "textArt"
-HammerEvents =
-	DoubleTap: "doubletap"
-	Hold: "hold"
 
-# Add the Hammer events to the base Framer events
-window.Events = _.extend Events, HammerEvents
-
-# Patch the on method on layers to listen to Hammer events
-class HammerLayer extends Framer.Layer
-	
-	on: (eventName, f) ->
-		
-		if eventName in _.values(HammerEvents)
-			@ignoreEvents = false			
-			hammer = Hammer(@_element).on eventName, f
-		
-		else
-			super eventName, f
-
-# Replace the default Layer with the HammerLayer
-window.Layer = HammerLayer
 
 nomalTime = 0.4
 beizerCurve = 'cubic-bezier(0.4, 0, 0.2, 1)'
@@ -40,18 +20,6 @@ topBarTitle.style = {
 	"font-weight": "bold"
 	"text-style": "800"
 }
-
-menuIcon = new Layer width:30, height:23, x:40, y:67, image:"images/menu.png", index:5
-menuIconHitArea = new Layer width:60, height:60, x:25, y:51,  index:5, backgroundColor:"transparent"
-closeMenuIcon = new Layer width:24, height:25, x:43, y:67, image:"images/closemenu.png", index:5, opacity:0
-searchIcon = new Layer width:27, height:28, x:Screen.width-80, y:70, image:"images/Search.png", superLayer:topBar
-
-menuOverlay = new Layer width:Screen.width, height:Screen.height, image:"images/overLay.png", y: -Screen.height, index:4
-
-assignmentsIcon = new Layer
-	x:600, y:620, width:356, height:233, image:"images/assignments.png", superLayer:menuOverlay
-notesIcon = new Layer
-	x:1200, y:627, width:158, height:214, image:"images/notes.png", superLayer:menuOverlay
 
 container = new ScrollComponent width:Screen.width, height:Screen.height-topBar.height, y:topBar.height+30, scrollVertical: false, index:1, visible:true, opacity:1
 
@@ -169,6 +137,19 @@ allTask = for i in [0...3]
 	
 
 # Task card ---------------
+
+menuOverlay = new Layer width:Screen.width, height:Screen.height, image:"images/overLay.png", y: -Screen.height, index:4
+
+assignmentsIcon = new Layer
+	x:600, y:620, width:356, height:233, image:"images/assignments.png", superLayer:menuOverlay
+notesIcon = new Layer
+	x:1200, y:627, width:158, height:214, image:"images/notes.png", superLayer:menuOverlay
+	
+menuIcon = new Layer width:30, height:23, x:40, y:67, image:"images/menu.png"
+menuIconHitArea = new Layer width:60, height:60, x:25, y:51, backgroundColor:"transparent"
+closeMenuIcon = new Layer width:24, height:25, x:43, y:67, image:"images/closemenu.png", opacity:0
+searchIcon = new Layer width:27, height:28, x:Screen.width-80, y:70, image:"images/Search.png", superLayer:topBar
+
 
 overlay = new Layer width:Screen.width, height:Screen.height, backgroundColor:"black", opacity:0, index:2
 
@@ -404,6 +385,7 @@ assignmentsIcon.on Events.Click, ->
 			rotationZ:-180
 		time:nomalTime
 		curve:beizerCurve
+	topBarTitle.html = "Assignments"
 
 notesIcon.on Events.Click, ->
 	container.visible = false
@@ -430,6 +412,7 @@ notesIcon.on Events.Click, ->
 			rotationZ:-180
 		time:nomalTime
 		curve:beizerCurve
+	topBarTitle.html = "Notes"
 
 task.on Events.Click, ->
 	container.scrollHorizontal = false
@@ -662,3 +645,15 @@ inputElement.onkeyup = (e) ->
 
 # Place input layer on screen
 textInputLayer._element.appendChild(inputElement)
+
+
+
+startPage = new Layer width:Screen.width, height:Screen.height, image:"images/startPage.png", visible:false
+startPage.on Events.Click, ->
+	startPage.animate
+		properties:
+			opacity: 0
+		time:nomalTime
+		curve:beizerCurve
+	Utils.delay nomalTime, ->	
+		startPage.visible = false
