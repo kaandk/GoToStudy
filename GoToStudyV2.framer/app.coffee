@@ -404,6 +404,7 @@ assignmentsIcon.on Events.Click, ->
 			rotationZ:-180
 		time:nomalTime
 		curve:beizerCurve
+	topBarTitle.html = "Assignments"
 
 notesIcon.on Events.Click, ->
 	container.visible = false
@@ -430,6 +431,7 @@ notesIcon.on Events.Click, ->
 			rotationZ:-180
 		time:nomalTime
 		curve:beizerCurve
+	topBarTitle.html = "Notes"
 
 task.on Events.Click, ->
 	container.scrollHorizontal = false

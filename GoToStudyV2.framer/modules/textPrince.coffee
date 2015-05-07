@@ -23,3 +23,6 @@ The "little book" suffered many vicissitudes before attaining the form in which 
 </br></br>
 Machiavelli concludes his letter to Vettori thus: "And as to this little thing [his book], when it has been read it will be seen that during the fifteen years I have given to the study of statecraft I have neither slept nor idled; and men ought ever to desire to be served by one who has reaped experience at the expense of others. And of my loyalty none could doubt, because having always kept faith I could not now learn how to break it; for he who has been faithful and honest, as I have, cannot change his nature; and my poverty is a witness to my honesty."
 '
+
+
+exports.notes = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Hoc enim constituto in philosophia constituta sunt omnia. Eorum enim omnium multa praetermittentium, dum eligant aliquid, quod sequantur, quasi curta sententia; Quae quidem vel cum periculo est quaerenda vobis; Qualem igitur hominem natura inchoavit? Neque solum ea communia, verum etiam paria esse dixerunt. Ex rebus enim timiditas, non ex vocabulis nascitur. At enim sequor utilitatem. Duo Reges: constructio interrete.'
